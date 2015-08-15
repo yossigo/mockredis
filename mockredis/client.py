@@ -1371,7 +1371,10 @@ class MockRedis(object):
         result = {}
         for name, value in self.redis_config.items():
             if fnmatch.fnmatch(name, pattern):
-                result[name] = value
+                try:
+                    result[name] = int(value)
+                except ValueError:
+                    result[name] = value
         return result
 
     # PubSub commands #
