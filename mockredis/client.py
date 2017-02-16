@@ -1362,7 +1362,8 @@ class MockRedis(object):
         """
         Set a configuration parameter.
         """
-        self.redis_config[name] = value
+        self.redis_config[name] = str(value)
+        return True
 
     def config_get(self, pattern='*'):
         """
@@ -1371,10 +1372,7 @@ class MockRedis(object):
         result = {}
         for name, value in self.redis_config.items():
             if fnmatch.fnmatch(name, pattern):
-                try:
-                    result[name] = int(value)
-                except ValueError:
-                    result[name] = value
+                result[name] = value
         return result
 
     # PubSub commands #

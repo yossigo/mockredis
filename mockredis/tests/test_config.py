@@ -13,14 +13,15 @@ class TestRedisConfig(object):
         teardown(self)
 
     def test_config_set(self):
-        eq_(self.redis.config_get('config-param'), {})
-        self.redis.config_set('config-param', 'value')
-        eq_(self.redis.config_get('config-param'), {'config-param': 'value'})
-        eq_(self.redis.config_get('config*'), {'config-param': 'value'})
+        ok_(self.redis.config_set('loglevel', 'debug'))
+        eq_(self.redis.config_get('loglevel'), {'loglevel': 'debug'})
+        ok_(self.redis.config_set('loglevel', 'notice'))
+        eq_(self.redis.config_get('loglevel'), {'loglevel': 'notice'})
+        eq_(self.redis.config_get('loglev*'), {'loglevel': 'notice'})
 
     def test_config_set_int_value(self):
-        eq_(self.redis.config_get('config-param-int'), {})
-        self.redis.config_set('config-param-int', 123)
-        eq_(self.redis.config_get('config-param-int'),
-                                  {'config-param-int': 123})
+        ok_(self.redis.config_set('hz', 12))
+        eq_(self.redis.config_get('hz'), {'hz': '12'})
+        ok_(self.redis.config_set('hz', 10))
+        eq_(self.redis.config_get('hz'), {'hz': '10'})
 
